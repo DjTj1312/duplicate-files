@@ -1,6 +1,6 @@
 # duplicate-finder
 
-A command-line tool to find and optionally remove duplicate files, 
+A command-line tool to find and optionally remove duplicate files,
 with support for images and music files.
 
 ## Features
@@ -19,15 +19,15 @@ Python 3.10+
 
 git clone <your-repo-url>
 cd duplicate-finder
-python -m venv venv
-.\venv\Scripts\Activate.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 
 ## Usage
 
-python dedupe.py /path/to/dir
-python dedupe.py /path/to/dir --type images
-python dedupe.py /path/to/dir --type music
-python dedupe.py /path/to/dir --type images --dry-run
-python dedupe.py /path/to/dir --output report.csv
-python dedupe.py /path/to/dir --delete --yes
+python dupFinder.py /path/to/dir
+python dupFinder.py /path/to/dir --type images
+python dupFinder.py /path/to/dir --type music
+python dupFinder.py /path/to/dir --type images --dry-run
+python dupFinder.py /path/to/dir --output report.csv
+python dupFinder.py /path/to/dir --delete --yes
