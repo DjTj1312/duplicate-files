@@ -147,24 +147,6 @@ python dupFinder.py D:\Photos --delete --yes
 Same, but skips the confirmation prompt. The "use existing report?" question is
 always shown regardless of `--yes`.
 
-### Use an existing report to delete or relocate
-
-When `--delete` or `--relocate` is called, the tool first asks:
-
-```
-Do you want to load an existing duplicate report instead of re-scanning? (y/n):
-```
-
-If you answer yes, you provide the path to a previously saved CSV. The tool reads
-only the rows marked `status = delete` and acts on those file paths directly,
-skipping the scan and hashing entirely.
-
-This is useful in two ways:
-
-1. You already ran a scan and saved a report. No need to hash everything again.
-2. You can open the CSV, manually delete rows you want to keep, save it, and then
-   load the edited version. Only the remaining `delete` rows will be acted on.
-
 ### Move duplicates to a staging folder instead of deleting
 
 ```
@@ -183,6 +165,32 @@ skipped automatically only if it uses the default name `duplicates`. For a custo
 path inside the scanned directory, point `--relocate` outside it to be safe.
 
 Add `--yes` to either of the above to skip the confirmation prompt.
+
+### Use an existing report to delete or relocate
+
+When you have already run a scan and saved a report, you can skip re-scanning
+entirely by passing `--load-report` alongside `--delete` or `--relocate`.
+
+```
+python .\dupfinder.py D:\Photos --relocate --load-report D:\Photos\duplicates_report.csv
+python .\dupfinder.py D:\Photos --delete --load-report D:\Photos\duplicates_report.csv
+```
+
+The tool reads only the rows marked `status = delete` from the CSV and acts on
+those file paths directly. Rows you have manually deleted from the CSV are gone,
+so those files are never touched.
+
+This is useful in two ways:
+
+1. You already scanned and saved a report. No need to hash everything again.
+2. You can open the CSV, delete rows for files you want to leave alone, save it,
+   then load the edited version. Only the remaining delete rows are acted on.
+
+`--load-report` requires `--delete` or `--relocate`. Using it without one of those
+flags will exit with an error.
+
+When `--load-report` is active, `--exclude`, `--type`, `--ext`, and `--output`
+have no effect since no scan takes place.
 
 ## Defaults
 
@@ -209,5 +217,6 @@ Add `--yes` to either of the above to skip the confirmation prompt.
 | `--dry-run` | Preview only, no changes made |
 | `--relocate [PATH]` | Move duplicates to a staging folder. Defaults to `<directory>/duplicates` if no path given |
 | `--delete` | Permanently delete duplicates |
+| `--load-report PATH` | Load an existing report CSV instead of scanning. Must be combined with `--delete` or `--relocate` |
 | `--yes`, `-y` | Skip the confirmation prompt for `--delete` or `--relocate` |
 | `--verbose` | Enable debug-level logging |
